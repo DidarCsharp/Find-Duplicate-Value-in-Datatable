@@ -1,0 +1,33 @@
+ try
+            {
+                DataTable dt = new DataTable();
+                dt.Columns.Add("ExpenseTypeCode");
+                dt.Columns.Add("BillAmount");
+                //-------------Set Data Tbale Value----------------//
+                foreach (var arr in array)
+                {
+                    DataRow dr = dt.NewRow();
+                    dr["ExpenseTypeCode"] = arr[0];
+                    dr["BillAmount"] = arr[1];
+                    dt.Rows.Add(dr);
+                }
+                //--------------Insert Details Data---------------//      
+                //--
+                var duplicates = dt.AsEnumerable()
+                   .Select(dr => dr.Field<string>("ExpenseTypeCode"))
+                   .GroupBy(x => x)
+                   .Where(g => g.Count() > 1)
+                   .Select(g => g.Key)
+                   .ToList();
+                //  if(.Contains=="1")
+                string combindedString = string.Join(",", duplicates);
+               if( combindedString=="")
+                result = "";
+               else
+                    result = "Duplicate";
+                //--
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+            }
